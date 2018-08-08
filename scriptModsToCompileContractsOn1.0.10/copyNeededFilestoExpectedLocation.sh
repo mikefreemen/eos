@@ -1,6 +1,6 @@
 echo "======================================="
 echo "This utility moves around files to be where the eosiocpp tool expects them."
-echo "It was written to work with EOSIO 1.1.3.  Things change fast.  It may not work for 1.1.4..."
+echo "It was written to work with EOSIO 1.0.10.  Things change fast.  It may not work for 1.1.1..."
 echo "Move required files to where the eosiocpp tool expects them..."
 echo "======================================="
 echo " "
