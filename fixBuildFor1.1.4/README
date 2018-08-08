@@ -2,7 +2,7 @@ This fix is for 1.1.4 ONLY, not by intention, just given that this is an area of
 
 This is kludgy; don't expect much...
 
-My main goal was simply to get the hello world tutorial on the EOS Developer Portal working.  This script and one other mod achieves that.
+My main goal was simply to get the [hello world tutorial](https://developers.eos.io/eosio-cpp/docs/hello-world) on the [EOS Developer Portal](https://developers.eos.io/) working.  This script and one other mod achieves that.
 
 Preconditions:
  - clone the EOS github repo according to the [Getting the Code page](https://developers.eos.io/eosio-nodeos/docs/getting-the-code)
