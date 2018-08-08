@@ -19,7 +19,6 @@ if [ ! -d "$EOSIO_CLONED_REPO_ROOT" ]; then
   exit 0
 fi
 
-EOSIO_CLONED_REPO_ROOT=${HOME}/eosSandbox/eos
 echo "About to move needed files from (${EOSIO_CLONED_REPO_ROOT})"
 EOSIO_INSTALL_DIR=/usr/local/eosio
 echo "EOSIO_INSTALL_DIR: (${EOSIO_INSTALL_DIR})"
