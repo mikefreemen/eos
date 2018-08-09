@@ -142,24 +142,11 @@ Phew!  Part 1 done.
 Next we're going to move the files that aren't where the compiler expects them...
 
 Rather than give you the gory details, I've written a script you can grab from [my github repo](https://raw.githubusercontent.com/mikefreemen/eos/master/fixBuildFor1.1.4/copyNeededFilestoExpectedLocation.sh).  Paste the contents of this script into a new file, set it to be executable, and run it.
-
-
-
-
- 
-1) edit `/usr/local/eosio/bin/eosiocpp`
- - On lines 57, 58, and 59, you'll find this
-    ${EOSIO_INSTALL_DIR}/usr/share/eosio/contractsdk/lib/eosiolib.bc \
-    ${EOSIO_INSTALL_DIR}/usr/share/eosio/contractsdk/lib/libc++.bc \
-    ${EOSIO_INSTALL_DIR}/usr/share/eosio/contractsdk/lib/libc.bc
- - Change those paths to look like this
-    ${EOSIO_INSTALL_DIR}/contractsdk/lib/eosiolib.bc \
-    ${EOSIO_INSTALL_DIR}/contractsdk/lib/libc++.bc \
-    ${EOSIO_INSTALL_DIR}/contractsdk/lib/libc.bc
-
-2) Then download the script in this folder from my repo, set it executable if needed, and execute it.
- - It will ask you for the folder you cloned the EOS repo into.
- - Then it will move around a few files the compiler and linker need to compile and link.
+ - It will ask you for the folder you cloned the EOS repo into.  If you haven't done this already, clone the repo and remember where you did that with this command 'git clone https://github.com/EOSIO/eos --recursive'
+ - Then it will move a few files the compiler and linker need to compile and link into the docker container to the appropriate locations.
  - It appears that the build system / file structure is being reorganized, and these files are just out of sync with the intended strcuture.  So this puts the needed files (at least for the hello tutorial) where the compiler/linker expect them.
 
 To be uber-clear, this is not meant to do what the EOSIO, I'm sure soon, will do to actually fix this.  This is just a stop-gap measure to assist those like me trying to learn EOS Contracts at a time when the primary example in the repo doesn't work.  If I get fed up with this format and try to formalize this solution more, I'll update the code here.
+
+Now we can finally compile the `hello` contract.
+

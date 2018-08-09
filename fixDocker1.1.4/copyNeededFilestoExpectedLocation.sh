@@ -1,4 +1,4 @@
-debugOn="Please debug prettily for me..."
+#debugOn="Please debug prettily for me..."
 debugEnabled () {
   [ ! -z "$debugOn" ]
 }
@@ -9,18 +9,14 @@ echo "Move required files to where the eosiocpp tool expects them..."
 echo "======================================="
 echo " "
 echo "You do *not* need to have built the EOS source, but you do need to clone the eos github repository."
-echo "If you need to clone the repo, press Ctrl-C and then run 'git clone https://github.com/EOSIO/eos.git'.  Take note of where you do this because you'll need to tell this script where that folder is."
+echo "If you need to clone the repo, press Ctrl-C and then run 'git clone https://github.com/EOSIO/eos.git --recursive'.  Take note of where you do this because you'll need to tell this script where that folder is."
 echo " "
 echo " "
 
 debugEnabled && echo "Debug mode enabled..."
 
 echo "Please enter the path to your cloned eos repo"
-
-### TEMPORARY ###
-# read EOSIO_CLONED_REPO_ROOT
-EOSIO_CLONED_REPO_ROOT=/home/mike/eosSandbox/eos
-### TEMPORARY ###
+read EOSIO_CLONED_REPO_ROOT
 
 debugEnabled && echo "EOSIO_CLONED_REPO_ROOT: (${EOSIO_CLONED_REPO_ROOT})"
 if [ ! -d "$EOSIO_CLONED_REPO_ROOT" ]; then
@@ -32,29 +28,26 @@ debugEnabled && echo "About to move needed files from (${EOSIO_CLONED_REPO_ROOT}
 EOSIO_INSTALL_DIR=/opt/eosio
 debugEnabled && echo "EOSIO_INSTALL_DIR: (${EOSIO_INSTALL_DIR})"
 
-### NEED FIXING ###
-BOOST_INSTALL_INCLUDE_DIR=${HOME}/opt/boost/include
+BOOST_INSTALL_INCLUDE_DIR=/usr/local/include
 debugEnabled && echo "BOOST_INSTALL_INCLUDE_DIR: (${BOOST_INSTALL_INCLUDE_DIR})"
-###################
 
 echo "Fixing Compilation Paths..."
-# sudo cp -R ${EOSIO_CLONED_REPO_ROOT}/include ${EOSIO_INSTALL_DIR}/include/
-
-#docker exec -it eosio mkdir -p ${EOSIO_INSTALL_DIR}/include/eosiolib
 docker cp ${EOSIO_CLONED_REPO_ROOT}/contracts/eosiolib eosio:${EOSIO_INSTALL_DIR}/include/
 
-docker exec -it mkdir -p ${EOSIO_INSTALL_DIR}/include/libc++/upstream/include
-cp ${EOSIO_CLONED_REPO_ROOT}/contracts/libc++/upstream/include ${EOSIO_INSTALL_DIR}/include/libc++/upstream/
-exit 0
+docker cp ${EOSIO_CLONED_REPO_ROOT}/contracts/libc++/upstream eosio:${EOSIO_INSTALL_DIR}/include/libc++/
 
-sudo mkdir -p ${EOSIO_INSTALL_DIR}/include/musl/upstream/include
-sudo cp -R ${EOSIO_CLONED_REPO_ROOT}/contracts/musl/upstream/include/* ${EOSIO_INSTALL_DIR}/include/musl/upstream/include
-sudo cp -R ${EOSIO_CLONED_REPO_ROOT}/externals/magic_get/include/boost ${BOOST_INSTALL_INCLUDE_DIR}
+docker cp ${EOSIO_CLONED_REPO_ROOT}/contracts/musl eosio:${EOSIO_INSTALL_DIR}/include/
+
+docker cp ${EOSIO_CLONED_REPO_ROOT}/externals/magic_get/include/boost eosio:${BOOST_INSTALL_INCLUDE_DIR}
 
 # Fix Linking Folders
 CONTRACTS_SDK_LIB_DIR=${EOSIO_INSTALL_DIR}/contractsdk/lib/
 echo "Fixing Linker Paths... Linker lib folder target: (${CONTRACTS_SDK_LIB_DIR})"
-sudo mkdir -p ${CONTRACTS_SDK_LIB_DIR}
-sudo cp ${EOSIO_CLONED_REPO_ROOT}/build/contracts/eosiolib/eosiolib.bc ${CONTRACTS_SDK_LIB_DIR}
-sudo cp ${EOSIO_CLONED_REPO_ROOT}/build/contracts/libc++/libc++.bc ${CONTRACTS_SDK_LIB_DIR}
-sudo cp ${EOSIO_CLONED_REPO_ROOT}/build/contracts/musl/libc.bc ${CONTRACTS_SDK_LIB_DIR}
+docker exec -it eosio mkdir -p ${CONTRACTS_SDK_LIB_DIR}
+docker cp ${EOSIO_CLONED_REPO_ROOT}/build/contracts/eosiolib/eosiolib.bc eosio:${CONTRACTS_SDK_LIB_DIR}
+docker cp ${EOSIO_CLONED_REPO_ROOT}/build/contracts/libc++/libc++.bc eosio:${CONTRACTS_SDK_LIB_DIR}
+docker cp ${EOSIO_CLONED_REPO_ROOT}/build/contracts/musl/libc.bc eosio:${CONTRACTS_SDK_LIB_DIR}
+
+echo " "
+echo "Done.  If you don't see any errors listed, everything likely went as planned."
+echo " "
